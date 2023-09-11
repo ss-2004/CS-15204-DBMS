@@ -1,16 +1,17 @@
+--1
 SELECT * 
 FROM products
 JOIN sales 
 ON sales.ord_id = products.ord_id
 WHERE TO_CHAR(products.mfg_date, 'yyyy') = TO_CHAR(sales.ord_date, 'yyyy');
-
+--2
 SELECT * 
 FROM products
 JOIN sales 
 ON sales.ord_id = products.ord_id
 WHERE TO_CHAR(products.mfg_date, 'yyyy') = TO_CHAR(sales.ord_date, 'yyyy') 
 AND sales.client = 'Smith';
-
+--3
 SELECT COUNT(sales.ord_date), EXTRACT(YEAR FROM sales.ord_date)
 FROM sales
 GROUP BY 
@@ -18,7 +19,7 @@ EXTRACT(
     YEAR 
     FROM sales.ord_date
 );
-
+--4
 SELECT COUNT(sales.ord_date) AS order_count, 
 EXTRACT(YEAR FROM sales.ord_date) AS order_year
 FROM sales
@@ -27,12 +28,12 @@ GROUP BY EXTRACT(
 	YEAR 
 	FROM sales.ord_date
 );
-
+--5
 SELECT DISTINCT(vnd_name)
 FROM vendors
 JOIN sales 
 ON sales.client = vendors.vnd_name
-
+--6
 SELECT p.material AS food, 
 SUM(s.qnty) AS orders
 FROM products p
@@ -40,7 +41,7 @@ JOIN sales s
 ON s.ord_id = p.ord_id
 WHERE p.material = 'BREAD' 
 GROUP BY p.material
-
+--7
 SELECT p.material AS food, 
 SUM(s.qnty) AS orders,
 EXTRACT(YEAR FROM s.ord_date) AS order_year
@@ -49,7 +50,7 @@ JOIN sales s
 ON s.ord_id = p.ord_id
 WHERE p.material = 'BREAD' 
 GROUP BY p.material, EXTRACT(YEAR FROM s.ord_date);
-
+--8
 SELECT DISTINCT p.prod_id
 FROM products p
 JOIN sales s 
@@ -57,7 +58,7 @@ ON p.ord_id = s.ord_id
 JOIN vnd_info v 
 ON p.vnd_id = v.vnd_id
 WHERE s.client != v.vnd_name;
-
+--9
 SELECT DISTINCT s.client
 FROM sales s
 JOIN products p 
@@ -66,7 +67,7 @@ JOIN vnd_info v
 ON p.vnd_id = v.vnd_id
 WHERE v.vnd_name = 'Smith' 
 AND p.material = 'MILK';
-
+--10
 SELECT SUM(s.qnty) AS total_sales, 
 EXTRACT (YEAR FROM s.ord_date) AS order_year,
 v.vnd_name 
